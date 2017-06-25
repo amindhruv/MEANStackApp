@@ -1,8 +1,8 @@
-var myApp = angular.module('myApp', []);
-myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
+angular.module('myApp', [])
+	.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 	var refresh = function() {
-		$http.get('/contactlist').success(function(response) {
-			$scope.contactlist = response;
+		$http.get('/contactlist').then(function(response) {
+			$scope.contactlist = response.data;
 			$scope.contact = "";
 		});
 	};
@@ -10,13 +10,13 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 	refresh();
 
 	$scope.add = function() {
-		$http.post('/contactlist', $scope.contact).success(function(response) {
+		$http.post('/contactlist', $scope.contact).then(function(response) {
 			refresh();
 		});
 	};
 
 	$scope.update = function() {
-		$http.put('/contactlist/' + $scope.contact._id, $scope.contact).success(function(response) {
+		$http.put('/contactlist/' + $scope.contact._id, $scope.contact).then(function(response) {
 			refresh();
 		});
 	};
@@ -26,14 +26,14 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.remove = function(id) {
-		$http.delete('/contactlist/' + id).success(function(response) {
+		$http.delete('/contactlist/' + id).then(function(response) {
 			refresh();
 		});
 	};
 
 	$scope.edit = function(id) {
-		$http.get('/contactlist/' + id).success(function(response) {
-			$scope.contact = response;
+		$http.get('/contactlist/' + id).then(function(response) {
+			$scope.contact = response.data;
 		});
 	};
 }]);
